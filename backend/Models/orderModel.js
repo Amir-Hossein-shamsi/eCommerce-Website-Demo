@@ -21,26 +21,60 @@ const OrderSchema = mongoose.Schema(
         },
       },
     ],
-    shippingAddress: {},
-    password: {
+
+    shippingAddress: {
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      postalCode: { type: String, required: true },
+      country: { type: String, required: true },
+    },
+
+    paymentMethod: {
       type: String,
       required: true,
-      minlength: 7,
-      trim: true,
-      lowercase: true,
-      validate(x) {
-        if (x.includes('password')) {
-          throw new Error('password cannot contain "password"')
-        }
-      },
     },
-    isAdmin: {
+
+    paymentResult: {
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: String },
+      email_address: { type: String },
+    },
+    taxPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    shippingPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    totalPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    ispaid: {
       type: Boolean,
+      required: true,
       default: false,
+    },
+    paidAT: {
+      type: Date,
+    },
+
+    isDelivered: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    deleveredAt: {
+      type: Date,
     },
   },
   { timestamps: true }
 )
 
-const User = mongoose.model('User', UserSchema)
-export default User
+const Order = mongoose.model('Order', OrderSchema)
+export default Order
