@@ -9,9 +9,10 @@ const router = express.Router()
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find({})
+
     res.json(products)
   } catch (error) {
-    res.status(500).json({ Error: error, messages: 'pls try again ' })
+    res.status(500).json({ Error: error, message: 'server is Down' })
   }
 })
 
@@ -20,14 +21,16 @@ router.get('/', async (req, res) => {
 //@access   public
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findById({ _id: req.params.id })
+    const product = await Product.findById(req.params.id)
+    // throw new Error()
     if (product) {
       res.json(product)
-    } else {
-      res.status(404).json({ messages: 'not founded' })
+    } else if (!product) {
+      res.status(404)
+      throw new Error('Product not found')
     }
   } catch (error) {
-    res.status(500).json({ Error: error, messages: 'pls try again ' })
+    res.status(500).json({ message: 'pls try again ' })
   }
 })
 
