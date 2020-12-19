@@ -16,8 +16,9 @@ pids
 *.seed
 *.pid.lock
 
+/Upload
 
-
+/frontend/build
 #................
 .idea/
 .vscode/

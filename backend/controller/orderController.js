@@ -83,6 +83,27 @@ const updateOrderToPaid = async (req, res) => {
   }
 }
 
+//TODO: Update order to Delivered
+//@desc     Update order to Delivered
+//@route    PATCH /api/orders/:id/deliver
+//@access   private/Admin
+const updateOrderToDeliver = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+    if (!order) {
+      res.status(404)
+      throw new Error('Order not founded')
+    }
+    order.isDelivered = true
+    order.deliveredAt = Date.now()
+
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } catch (error) {
+    res.status(400).json(error.message)
+  }
+}
+
 //TODO: Get Logged in User orders(myorders)
 //@desc     Get Logged in User orders
 //@route    PATCH /api/orders/myorders
@@ -99,4 +120,28 @@ const getMyOrders = async (req, res) => {
   }
 }
 
-export { addOrderItems, getOrderByID, updateOrderToPaid, getMyOrders }
+//TODO: Get All orders
+//@desc     Get All orders
+//@route    GET /api/orders
+//@access   private/Admin
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate('user', 'id name')
+    if (!order) {
+      res.status(404)
+      throw new Error('Order not founded')
+    }
+    res.json(orders)
+  } catch (error) {
+    res.status(400).json(error.message)
+  }
+}
+
+export {
+  addOrderItems,
+  getOrderByID,
+  updateOrderToPaid,
+  updateOrderToDeliver,
+  getMyOrders,
+  getAllOrders,
+}
